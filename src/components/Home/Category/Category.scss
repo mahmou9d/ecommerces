@@ -1,0 +1,43 @@
+@import "../../../css-config/mixins.scss";
+.shop-by-category{
+    margin: 25px 0;
+    @include md{
+        margin: 50px 0;
+    }
+    .categories{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 5px;
+        .category{
+            background-color: black;width: calc(50% - 5px);
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 5px;
+            width: 190px;
+            height: 125px;
+            flex-grow: 1;
+            @include md{
+                width: calc(25% - 10px);
+                height: 150px;
+            }
+            img{
+                width: 100%;
+                display: block;
+                transition: all ease 0.3s;
+                height: 100%;
+                border: 1.5px solid blue;
+            }
+                &:hover{
+                    img{
+                        transform: scale(1.2);
+                    }
+                }
+            
+
+        }
+    }
+}
+.cat{
+
+}

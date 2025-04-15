@@ -1,0 +1,216 @@
+@import "../../../css-config/mixins.scss";
+
+
+
+.hero-banner{
+    box-shadow: 0px 0px 12px 0px blue;
+    padding: 40px 0;
+    position: relative;
+    background-image: linear-gradient(to right,#212121, #280471);
+@include md{
+    height: calc(100vh - 60px);
+}
+
+.content{
+
+    // margin-top: -30px;
+    // height: 100%;
+    display: flex;
+    // justify-content: flex-end;
+    flex-direction: column;
+    // align-items: center;
+    margin: 0 auto;
+    @include lg{
+        flex-direction: row;
+        max-width: 1200px;
+        gap: 40px;
+    }
+    .img{
+        margin-right: 650px;
+        width: 250px;
+        @include md{
+            margin-right: 544px;
+        }
+    }
+    img{
+        position: relative;
+        z-index: 9;
+        width: 180px;
+        margin-left: 10px;
+        margin-bottom: 20px; 
+        margin-top: 50px;
+        animation: float 3s infinite ease-in-out;
+        @include md{
+            width: 500px;
+            margin-bottom: 0;
+            margin-right: 60px;
+            // margin-left: 50px;
+            width: 212px;
+        }
+        @include xl{
+
+        }
+        @include xxl {
+            
+            margin-right: 0;
+            margin-top: 50px;
+            
+        }
+    }
+    .text-content{
+        color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // width: 400px;
+
+        @include md{
+            position: absolute;
+            left: 0;
+            transform: translateY(50%);
+            padding-left: 50px;
+            margin-left: 300px;
+        }
+        @include lg{
+            width: 560px;
+        }
+        @include xxl{
+            left: 0;
+            padding-left: 150px;
+        }
+        h1{
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            @include md{
+                font-size:180px;
+        }
+        }
+        p{
+            max-width: 300px;
+            font-size: 14px;
+            line-height: 20px;
+            /* margin-bottom: 20px; */
+            height: 60px;
+            margin-top: 30px;
+            
+            @include md{
+                height: 95px;
+                // max-width: 500px;
+                font-size: 18px;
+                line-height: 24px;
+                // margin-bottom: 40px;
+                // letter-spacing: 2px;
+            }
+        }
+        .cats{
+            
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            .banner-cate{
+                text-transform: uppercase;
+                font-size: 25px;
+                font-weight: 500;
+                border: 1px solid blue;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: 0.3s;
+                border-radius: 10px;
+                &.v2{
+                    background-color: #212121;
+                    color: blue;
+                }
+                &:hover{
+                    opacity: 0.6;
+
+                }
+            }
+        }
+    }
+}
+
+
+
+}
+
+
+
+
+.wave-text span {
+    display: inline-block;
+    font-size: 8rem;
+    animation: wave 2s ease-in-out infinite;
+}
+
+.wave-text span:nth-child(1) {
+    animation-delay: 0s;
+}
+.wave-text span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.wave-text span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+.wave-text span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+
+/* Cursor */
+.cursor{
+    margin-top: 40px;
+    position: relative;
+    // width: 24em;
+    margin: 0 auto;
+    border-right: 2px solid rgba(255,255,255,.75);
+    font-size: 10px;
+    text-align: center;
+    // white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);    
+}
+/* Animation */
+.typewriter-animation {
+animation: 
+    typewriter 5s steps(50) 1s 1 normal both, 
+    blinkingCursor 500ms steps(50) infinite normal;
+}
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+    }
+    @keyframes blinkingCursor{
+        from { border-right-color: rgba(255,255,255,.75); }
+        to { border-right-color: transparent; }
+    }
+
+
+
+
+
+
+@keyframes float {
+    0%{transform: translateY(0);}
+    50%{
+        transform: translateY(20px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
+
+
+
