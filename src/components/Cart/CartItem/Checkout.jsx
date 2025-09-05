@@ -1,135 +1,176 @@
-import { useEffect, useState } from 'react';
-import './Checkout.scss'
+import { useEffect, useState, useMemo, useCallback } from "react";
+import "./Checkout.scss";
+import { useNavigate } from "react-router-dom";
+import { MdClose } from "react-icons/md";
+
 function Checkout() {
-    const [scroll,setScroll]= useState(false)
-    const [total,setTotal]=useState(0)
-    const [product,setProduct]=useState([])
-    const [address,setAddress]=useState("")
-    const [phone,setPhone]=useState("")
-    const [days,setDays]=useState("Saturday")
-    useEffect(()=>{
-        const data= localStorage.getItem("watch");
-        console.log("llllllllllll",data)
-        if(data){
-            try {
-                const parsedData=JSON.parse(data)
-                setProduct(Array.isArray(parsedData)?parsedData:[parsedData]);
-            } catch (error) {
-                console.error(error,"kkkkkkkkkkkkkkk")
-                setProduct([])
-            }
-        }
-        // if (data&&data.length>0){
-        //     setProduct(prev=>prev?prev: Array.isArray(data)?data:[data]);
-        //     console.log(".................")}else{console.warn("mmmm")}
-    },[])
-    useEffect(()=>{
-        if(Array.isArray(product)&&product.length>0){
-            setTotal(product.reduce((acc,item)=>acc+(item.price||0),0))
-        }
+  const navigate = useNavigate();
+  const [scroll, setScroll] = useState(false);
+  const [product, setProduct] = useState(() => {
+    const stored = localStorage.getItem("watch");
+    try {
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
-    },[product])
-    // console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-    const sendToWhatsApp=()=>{
-        if (!product.length) return;
-        const phoneNumber="201009014597"
-        // const totalPrice += product.price
-        // const message = `0%ordernewA
-        // product:${product[0]?.title || null}%0A
-        // price:${product[0]?.price || null}%0A
-        // title:${address}%0A
-        // phone:${phone}%0A
-        // days:${days}%0A
-        // total:${total}%0A`
-        const message =encodeURIComponent(`Order\n`+product.map(p=>`product:  ${p.title||"N/A"}\nprice:  ${p.price||"N/A"}`).join("\n")+`\nAddress:  ${address}\n Phone:  ${phone}\n Days:  ${days}\n Total:  ${total}`)
-        const url = `https://wa.me/${phoneNumber}?text=${message}`
-        // const hidden=document.createElement("iframe")
-        //     hidden.style.display="none";
-        //     hidden.src=url;
-        // document.body.appendChild(hidden)
-        window.open(url,"_blank")
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [days, setDays] = useState("Saturday");
+
+  useEffect(() => {
+    if (product.length > 0) {
+      localStorage.setItem("watch", JSON.stringify(product));
+    } else {
+      localStorage.removeItem("watch");
     }
-    if(!product.length) return <p className='p'>loading product....</p> 
-    // console.log(product,"vvvvvvvvvvvvvvvvvvvvvvvvvv")
-    
-const hndlescroll=()=>{
-    if(!scroll){
-        window.scrollTo(0,0)
-        setScroll(true)
+  }, [product]);
+
+  const total = useMemo(
+    () => product.reduce((acc, item) => acc + (item.price || 0), 0),
+    [product]
+  );
+
+  const sendToWhatsApp = useCallback(() => {
+    if (!product.length || !phone || !address) return;
+
+    const phoneNumber = "201009014597";
+    const message = encodeURIComponent(
+      `Order\n` +
+        product
+          .map(
+            (p) => `Product: ${p.title || "N/A"}\nPrice: ${p.price || "N/A"}`
+          )
+          .join("\n") +
+        `\nAddress: ${address}\nPhone: ${phone}\nDay: ${days}\nTotal: ${total}`
+    );
+
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+
+    // Reset state + localStorage
+    setProduct([]);
+    localStorage.clear();
+
+    localStorage.removeItem("watch");
+    setAddress("");
+    setPhone("");
+    navigate("/");
+window.location.reload();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [product, phone, address, days, total, navigate]);
+
+  // 🔹 إزالة منتج واحد
+  const handleRemove = useCallback(
+    (id) => {
+      setProduct((prev) => prev.filter((item) => item.id !== id));
+    },
+    [setProduct]
+  );
+
+  // 🔹 Scroll once only
+  useEffect(() => {
+    if (!scroll) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setScroll(true);
     }
-}
-    return (
-        <form >
-        <div className='data'>
-            {product?.map((item)=>{
-                // setTotal(total +item.price);
-            return(
-            <div className='item' key={item.id}>
-                <div>
-                    <img className='img' src={item.img} alt="" />
-                    </div>
-                    <div>
-                    <h1>{item.title}</h1>
-                    <p>${item.price}</p>
-                    <p>{item.category}</p>
-                    </div>
+  }, [scroll]);
+
+  if (!product.length) {
+    return <p className="p">No product found in your cart...</p>;
+  }
+
+  const weekDays = [
+    "Saturday",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ];
+
+  return (
+    <form className="checkout">
+      <div className="data">
+        {product.map((item) => (
+          <div className="item" key={item.id}>
+            <div style={{ display: "flex" }}>
+              <img
+                className="img"
+                src={item.img}
+                alt={item.title}
+                width={160}
+                height={160}
+                loading="lazy"
+              />
+              <div>
+                <h1>{item.title}</h1>
+                <p>${item.price}</p>
+                <p>{item.category}</p>
               </div>
-            )
-        })}
+            </div>
+            <MdClose
+              style={{ fontSize: "18px", cursor: "pointer" }}
+              onClick={() => handleRemove(item.id)}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="check">
+        <div className="address">
+          <label className="add" htmlFor="address">
+            ADDRESS
+          </label>
+          <input
+            className="input"
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            type="text"
+            required
+          />
         </div>
-            <div className="check" onClick={() => {hndlescroll}}>
-            <div className="product"></div>
-            <div className="address">
-            <label className="add" htmlFor="ADDRESS">ADDRESS</label>
-            <input className="input"  id="text" value={address} required
-            onChange={(e)=>{
-                setAddress(e.target.value) 
-            }}
-                type="text" 
-                name="address" />
-            </div>
-            <div className="phone">
-            <label className="add" htmlFor="phone number">phone number</label>
-            <input className="input" id="number" value={phone} onChange={(e)=>setPhone(e.target.value)}
-                type="number" required
-                name="number" />
-            </div>
-            <div  className="days">
-            <div onClick={()=>{
-                setDays("Saturday")
-            }}  className={days==="Saturday"?"day active":"day"}>Saturday</div>
-            <div onClick={()=>{
-                setDays("Sunday")
-            }} className={days==="Sunday"?"day active":"day"}>Sunday</div>
-            <div onClick={()=>{
-                setDays("Monday")
-            }}  className={days==="Monday"?"day active":"day"}>Monday</div>
-            <div onClick={()=>{
-                setDays("Tuesday")
-            }}  className={days==="Tuesday"?"day active":"day"}>Tuesday</div>
-            <div onClick={()=>{
-                setDays("Wednesday")
-            }}  className={days==="Wednesday"?"day active":"day"}>Wednesday</div>
-            <div onClick={()=>{
-                setDays("Thursday")
-            }}  className={days==="Thursday"?"day active":"day"}>Thursday</div>
-            <div onClick={()=>{
-                setDays("friday")
-            }}  className={days==="friday"?"day active":"day"}>friday</div>
 
-
-
-
-            </div>
-
-            <div className="total">
-                <h1>TOTAL</h1>
-                {total}</div>
-<button className='sub' type="submit" onClick={phone&&address&&sendToWhatsApp}>Submit</button>
+        <div className="phone">
+          <label className="add" htmlFor="phone">
+            PHONE NUMBER
+          </label>
+          <input
+            className="input"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            required
+          />
         </div>
-        </form>
-   
-    )
+
+        <div className="days">
+          {weekDays.map((day) => (
+            <div
+              key={day}
+              onClick={() => setDays(day)}
+              className={days === day ? "day active" : "day"}
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+
+        <div className="total">
+          <h1>TOTAL</h1>
+          <span>${total}</span>
+        </div>
+
+        <button className="sub" type="button" onClick={sendToWhatsApp}>
+          Submit
+        </button>
+      </div>
+    </form>
+  );
 }
 
-export default Checkout
+export default Checkout;

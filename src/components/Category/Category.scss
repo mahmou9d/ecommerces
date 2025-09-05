@@ -1,9 +1,7 @@
 @import "../../css-config/mixins.scss";
 .category-main-content{
-    // width: 300px !important;
-    
     margin:0 30px;
-    animation: slideCartWindow 0.4s ease forwards;
+    animation: slideCartWindow 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     @include md{
         margin: 0 75px;
     }
@@ -21,13 +19,8 @@
         flex-wrap: wrap;
         justify-content: space-around;
         margin-top: 10px;
-        // width: 1200px;
-
         @include md{
             max-width: 1200px;
-        }
-        .product-card{
-            // width: 25%;
         }
     }
     .category-title{
@@ -61,14 +54,11 @@
 @keyframes slideCartWindow {
     0% {
         transform: translateX(100%);
-    }
-    50%{
-        transform: translateX(10%);
-        scale: 1.2;
-        rotate: 360deg;
+        opacity: 0.5;
     }
 
     100% {
         transform: translateX(0);
+        opacity: 1;
     }
 }

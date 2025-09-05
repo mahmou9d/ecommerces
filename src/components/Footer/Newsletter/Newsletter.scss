@@ -19,7 +19,7 @@
     height: 400px;
     display: flex;
     align-items: center;
-    background: #001eff url("../../../../public/img/5559852.jpg");
+    background: #001eff url("/img/5559852_result.webp");
     background-position: center;
     background-repeat:no-repeat ;
     background-size: cover;
@@ -59,6 +59,7 @@
     }
     .form{
         display: flex;
+        justify-content: center;
         gap: 5px;
         margin-bottom: 10px;
         input{

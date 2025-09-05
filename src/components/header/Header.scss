@@ -4,14 +4,13 @@
     position: fixed;
     width: 100%;
     padding: 0 28px;
-    background-color: #212121;
+    background-color: #2121216b;
     color: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     z-index: 99;
 
     @include md {
         padding: 0 40px;
-        // width: 100%;
     }
     .header-content{
         display: flex;
@@ -44,7 +43,6 @@
         .center{
             font-size: 20px;
             font-weight: bold;
-            // color: blue;
             cursor: pointer;
             
             line-height: normal;
@@ -59,7 +57,7 @@
     height: 80px;
     padding-top: 30px;
     width: 457px;
-    // padding-left: 114px;
+    box-shadow: 0 0 20px 10px blue;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
     border-bottom: 5px solid blue;
@@ -117,17 +115,13 @@ animation: stickyHeader 0.3s ease forwards;
         display: flex;
         justify-content: center;
         align-items: center;
-        // height: 100vh;
-        z-index: 2; /* Ensure it stays above the rain effect */
+
+        z-index: 2; 
     }
     
     .matrix-text {
-        // color: #0000ff9e;
-        // font-size: 60px;
-        // font-family: monospace;
         position: relative;
-        // text-shadow: 0 0 10px rgba(0, 102, 255, 0.716), 0 0 20px rgba(0, 136, 255, 0.179), 0 0 30px rgba(0, 128, 255, 0.64);
-        z-index: 2; /* Ensure it stays above the rain effect */
+        z-index: 2;
     }
     
     .matrix-text::before {
@@ -143,32 +137,6 @@ animation: stickyHeader 0.3s ease forwards;
         color: rgb(0, 68, 255);
         text-shadow: 0 0 5px rgb(0, 51, 255), 0 0 15px rgb(0, 68, 255);
     }
-    
-    // .rain {
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     width: 100%;
-    //     height: 100%;
-    //     background: repeating-linear-gradient(21deg, rgba(0, 102, 255, 0.716) 0, rgb(104 104 234 / 34%) 2px, transparent 4px);
-    //     animation: rain 2s linear infinite;
-    //     z-index: 1;
-    //     border-bottom-right-radius: 50px;
-    //     border-bottom-left-radius: 50px;
-        // position: absolute;
-        // top: 0;
-        // left: 0;
-        // width: 100%;
-        // height: 100%;
-        // background: repeating-linear-gradient(
-        // 21deg,
-        // rgba(0, 255, 0, 0.1) 0,
-        // rgba(0, 255, 0, 0.2) 2px,
-        // transparent 4px
-        // );
-        // animation: rain 10s linear infinite;
-        // z-index: 1; /* Place it behind the text */
-    // }
     @keyframes heart {
         0% {
             scale: 2;
@@ -190,8 +158,6 @@ animation: stickyHeader 0.3s ease forwards;
         transform: translateY(60%);
     }
     }
-
-    /* Glitch effect for the text */
     @keyframes glitch {
     0%, 100% {
         clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);

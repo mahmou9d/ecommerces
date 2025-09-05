@@ -1,42 +1,46 @@
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.scss";
-import Header from "./components/header/Header";
+import Loader from "./components/Loader";
 import Footer from "./components/Footer/Footer";
-import Home from "./components/Home/Home";
-
-import SingleProduct from "./components/SingleProduct/SingleProduct";
-
 import Newsletter from "./components/Footer/Newsletter/Newsletter";
-import AppContext from "./utils/context";
-import Category1 from "./components/Category/category1";
-import Category2 from "./components/Category/category2";
-import Category3 from "./components/Category/category3";
-import Category4 from "./components/Category/Category4";
-import Checkout from "./components/Cart/CartItem/Checkout";
+import Header from "./components/header/Header";
+import React, { Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+
+const Home = React.lazy(() => import("./components/Home/Home"));
+const Checkout = React.lazy(() =>
+  import("./components/Cart/CartItem/Checkout")
+);
+const Category1 = React.lazy(() => import("./components/Category/category1"));
+const Category2 = React.lazy(() => import("./components/Category/category2"));
+const Category3 = React.lazy(() => import("./components/Category/category3"));
+const Category4 = React.lazy(() => import("./components/Category/Category4"));
+const SingleProduct = React.lazy(() =>
+  import("./components/SingleProduct/SingleProduct")
+);
 
 function App() {
-    
-    
-    return (
-        <BrowserRouter>
-            <AppContext>
-            
-                <Header />
-                <Routes>
-                    <Route path="/Checkout" element={<Checkout />} />
-                    <Route path="/" element={<Home />} />
-                    <Route path="/Category1" element={<Category1 />} />
-                    <Route path="/Category2" element={<Category2 />} />
-                    <Route path="/Category3" element={<Category3 />} />
-                    <Route path="/Category4" element={<Category4 />} />
-                    <Route path="/product/:d" element={<SingleProduct />} />
-                </Routes>
-                <Newsletter />
-                <Footer />
-            </AppContext>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<Loader />}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/Checkout" element={<Checkout />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/Category1" element={<Category1 />} />
+          <Route path="/Category2" element={<Category2 />} />
+          <Route path="/Category3" element={<Category3 />} />
+          <Route path="/Category4" element={<Category4 />} />
+          <Route path="/product/:id" element={<SingleProduct />} />
+        </Routes>
+      </Suspense>
+      <Suspense fallback={<Loader />}>
+        <Newsletter />
+        <Footer />
+      </Suspense>
+    </BrowserRouter>
+  );
 }
 
 export default App;

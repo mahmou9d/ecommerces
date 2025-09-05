@@ -1,34 +1,23 @@
+import Loader from "../../components/Loader";
 import "./Home.scss";
-import Banner from "./Banner/Banner";
-import Category from "./Category/Category";
-import Products from "../Products/Products";
-
-
-// import { useEffect } from "react";
-// import { fetchDataFromApi } from "../../utils/api";
-
-
+import { lazy, Suspense } from "react";
+const Banner = lazy(() => import("./Banner/Banner"));
+const Category = lazy(() => import("./Category/Category"));
+const Products = lazy(() => import("../Products/Products"));
 function Home() {
-    // const allProductsAPI = "products?populate=*";
-    // const [myDate, setmyDate] = useState(allProductsAPI);
-
-    // useEffect(()=>{
-    //     getCategory()
-    // },[])
-    // const getCategory=()=>{
-    //     fetchDataFromApi("/api/category?popular=*").then((res)=>console.log(res))
-    // }
-    return (
-        <div className="home">
-        <Banner/>
+  return (
+    <div className="home">
+      <Suspense fallback={<Loader/>}>
+        <Banner />
         <div className="main-content">
-            <div className="layout">
-            <Category/>
-            <Products headingTexy="Popular Products" innerPage={undefined}/>
-            </div>
+          <div className="layout">
+            <Category />
+            <Products headingTexy="Popular Products" innerPage={undefined} />
+          </div>
         </div>
-        </div>
-    )
+      </Suspense>
+    </div>
+  );
 }
 
-export default Home
+export default Home;
